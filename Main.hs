@@ -86,6 +86,20 @@ render game = pictures
 
       paddleColor = light (light blue)
 
+-- | Update the ball position using current velocity.
+-- | Atualizar posicao da bola usando a velocidade atual.
+moveBall :: Float    -- ^ O numero de segundos desde a ultima atualizacao.
+         -> PongGame -- ^ o estado inicial do jogo.
+         -> PongGame -- ^ Um novo estado do jogo com atualizao da posicao da bola.
+moveBall seconds game = game { ballLoc = (x', y') }
+   where
+     -- Local e velocidades antigas
+     (x, y) = ballLoc game
+     (vx, vy) = ballVel game
+
+     -- Nova localizacoes
+     x' = x + vx * seconds
+     y' = y + vy * seconds
 
 
 -- | O estado  inicial do Jogo
@@ -97,4 +111,9 @@ initialState = Game
          , player2 = -80 }
 
 main :: IO ()
-main = display window background drawing
+main = animate window background frame
+  where
+    frame :: Float -> Picture
+    frame seconds = render $ moveBall seconds initialState
+{- main :: IO ()
+main = display window background drawing -}
