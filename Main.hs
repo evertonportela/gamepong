@@ -78,7 +78,7 @@ render game = pictures
       walls = pictures [ wall 150, wall (-150)]
 
       --  Make a paddle of a given border and vertical offset.
-      --  Faça uma paleta de uma determinada borda e deslocamento vertical
+      --  Faça uma paleta de uma determinada borda e deslocamento vertical.
       mkPaddle :: Color -> Float -> Float -> Picture
       mkPaddle col x y = pictures 
         [ translate x y $ color col $ rectangleSolid 26 86
@@ -93,15 +93,22 @@ moveBall :: Float    -- ^ O numero de segundos desde a ultima atualizacao.
          -> PongGame -- ^ Um novo estado do jogo com atualizao da posicao da bola.
 moveBall seconds game = game { ballLoc = (x', y') }
    where
-     -- Local e velocidades antigas
+     -- Local e velocidades antigas.
      (x, y) = ballLoc game
      (vx, vy) = ballVel game
 
-     -- Nova localizacoes
+     -- Nova localizacoes.
      x' = x + vx * seconds
      y' = y + vy * seconds
 
-
+-- | Executar uma janela de tempo finito.
+simulate :: Display        -- ^ Como exibir o jogo.
+         -> Color          -- ^ Cor de Fundo.
+         -> Int            -- ^ Numero de etapas de simulacoes a serem tomadas por segundo.
+         -> a              -- ^ O estado de inicio do jogo.
+         -> (a -> Picture) -- ^ Um funcao para renderizar o jogo para uma imagem.
+         -> (ViewPort -> Float -> a -> a) -- ^ Uma funcao a respeito de cada etapa do jogo
+         -> IO ()
 -- | O estado  inicial do Jogo
 initialState :: PongGame
 initialState = Game
