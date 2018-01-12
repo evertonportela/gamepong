@@ -117,10 +117,24 @@ initialState = Game
          , player1 = 40
          , player2 = -80 }
 
+-- | Numero de quadros a mostrar por segundo
+fps :: Int
+fps = 60
+
+-- | Atualizacao do Jogo movendo a bola
+-- | Ignorando o argumento ViewPort
+update :: ViewPort -> Float -> PongGame -> PongGame
+update _ = moveBall
+
+main :: IO ()
+main = simulate window background fps initialState render update
+{-
 main :: IO ()
 main = animate window background frame
   where
     frame :: Float -> Picture
     frame seconds = render $ moveBall seconds initialState
-{- main :: IO ()
-main = display window background drawing -}
+
+main :: IO ()
+main = display window background drawing 
+-}
